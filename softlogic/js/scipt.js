@@ -109,3 +109,102 @@ function showSuccessMessage(message) {
         setTimeout(() => alert.remove(), 300);
     }, 3000);
 }
+function saveVehiculo() {
+    const form = document.getElementById('vehiculoForm');
+    if (form.checkValidity()) {
+        closeModal('vehiculoModal');
+        showSuccessMessage('Vehículo registrado exitosamente');
+        form.reset();
+        // Aquí iría la lógica para guardar en base de datos
+    } else {
+        form.reportValidity();
+    }
+}
+function saveProveedor() {
+    const form = document.getElementById('proveedorForm');
+    if (form.checkValidity()) {
+        closeModal('proveedorModal');
+        showSuccessMessage('Proveedor registrado exitosamente');
+        form.reset();
+        // Aquí iría la lógica para guardar en base de datos
+    } else {
+        form.reportValidity();
+    }
+}
+
+function saveEmpleado() {
+    const form = document.getElementById('empleadoForm');
+    if (form.checkValidity()) {
+        closeModal('empleadoModal');
+        showSuccessMessage('Empleado registrado exitosamente');
+        form.reset();
+        // Aquí iría la lógica para guardar en base de datos
+    } else {
+        form.reportValidity();
+    }
+}
+function saveCita() {
+    const form = document.getElementById('citaForm');
+    if (form.checkValidity()) {
+        closeModal('citaModal');
+        showSuccessMessage('Cita agendada exitosamente. Cliente notificado.');
+        form.reset();
+        document.getElementById('vehiculosCita').disabled = true;
+        // Aquí iría la lógica para guardar en base de datos
+    } else {
+        form.reportValidity();
+    }
+}
+function saveFactura() {
+    const form = document.getElementById('facturaForm');
+    if (form.checkValidity()) {
+        closeModal('facturaModal');
+        showSuccessMessage('Factura generada exitosamente');
+        form.reset();
+        // Aquí iría la lógica para guardar en base de datos
+    } else {
+        form.reportValidity();
+    }
+}
+
+function savePago() {
+    const form = document.getElementById('pagoForm');
+    if (form.checkValidity()) {
+        closeModal('registrarPagoModal');
+        showSuccessMessage('Pago registrado exitosamente. Factura marcada como pagada.');
+        form.reset();
+        // Aquí iría la lógica para actualizar estado de factura
+    } else {
+        form.reportValidity();
+    }
+}
+// Función para mostrar reportes
+function mostrarReporte(tipo) {
+    // Ocultar todos los reportes
+    document.getElementById('reporteVentas').style.display = 'none';
+    document.getElementById('reporteInventario').style.display = 'none';
+    document.getElementById('reporteClientes').style.display = 'none';
+    
+    // Mostrar el reporte seleccionado
+    if (tipo === 'ventas') {
+        document.getElementById('reporteVentas').style.display = 'block';
+    } else if (tipo === 'inventario') {
+        document.getElementById('reporteInventario').style.display = 'block';
+    } else if (tipo === 'clientes') {
+        document.getElementById('reporteClientes').style.display = 'block';
+    } else if (tipo === 'servicios') {
+        showSuccessMessage('Reporte de Servicios en construcción');
+    } else if (tipo === 'empleados') {
+        showSuccessMessage('Reporte de Empleados en construcción');
+    } else if (tipo === 'proveedores') {
+        showSuccessMessage('Reporte de Proveedores en construcción');
+    }
+    
+    // Scroll al reporte
+    setTimeout(() => {
+        window.scrollTo({
+            top: document.getElementById('reporteVentas').offsetTop - 100,
+            behavior: 'smooth'
+        });
+    }, 100);
+}
