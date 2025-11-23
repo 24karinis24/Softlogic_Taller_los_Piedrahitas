@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoftLogic - Taller Automotriz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563EB;
+            --secondary: #64748B;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --background: #F8FAFC;
+            --surface: #FFFFFF;
+            --text-primary: #1E293B;
+            --text-secondary: #64748B;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+        }
+
+        /* LOGIN STYLES */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
+        }
+
+        .login-box {
+            background: var(--surface);
+            padding: 48px;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .logo h1 {
+            color: var(--primary);
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .logo p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            border: 2px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .forgot-password a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* DASHBOARD LAYOUT */
+        .dashboard {
+            display: none;
+        }
+
+        .dashboard.active {
+            display: flex;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: var(--surface);
+            min-height: 100vh;
+            border-right: 1px solid #E2E8F0;
+            padding: 24px 0;
+        }
+
+        .sidebar-header {
+            padding: 0 24px 24px;
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        .sidebar-header h2 {
+            color: var(--primary);
+            font-size: 24px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 16px 0;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 4px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: #EFF6FF;
+            color: var(--primary);
+        }
+
+        .sidebar-menu a.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--primary);
+        }
+
+        .menu-icon {
+            margin-right: 12px;
+            width: 20px;
+        }
+
+        .badge {
+            margin-left: auto;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-warning {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .main-content {
+            flex: 1;
+            background: var(--background);
+        }
+
+        .header {
+            background: var(--surface);
+            padding: 16px 32px;
+            border-bottom: 1px solid #E2E8F0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 {
+            font-size: 24px;
+            color: var(--text-primary);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .notification-icon {
+            position: relative;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: var(--danger);
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .content-area {
+            padding: 32px;
+        }
+
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        /* CARDS */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .card {
+            background: var(--surface);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .card-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .icon-primary { background: #DBEAFE; color: var(--primary); }
+        .icon-success { background: #D1FAE5; color: var(--success); }
+        .icon-warning { background: #FEF3C7; color: var(--warning); }
+        .icon-danger { background: #FEE2E2; color: var(--danger); }
+
+        /* TABLE */
+        .table-container {
+            background: var(--surface);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .table-header {
+            padding: 24px;
+            border-bottom: 1px solid #E2E8F0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text-primary);
+            border: 2px solid #E2E8F0;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--background);
+        }
+
+        th {
+            padding: 16px 24px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 16px 24px;
+            border-top: 1px solid #E2E8F0;
+        }
+
+        tbody tr:hover {
+            background: var(--background);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-success {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .status-warning {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .status-danger {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .status-info {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-icon {
+            padding: 8px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .btn-icon:hover {
+            background: var(--background);
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid #E2E8F0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .form-grid.full {
+            grid-template-columns: 1fr;
+        }
+
+        .modal-footer {
+            padding: 24px;
+            border-top: 1px solid #E2E8F0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .alert {
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-warning {
+            background: #FEF3C7;
+            color: #92400E;
+            border-left: 4px solid var(--warning);
+        }
+
+        .alert-success {
+            background: #D1FAE5;
+            color: #065F46;
+            border-left: 4px solid var(--success);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- LOGIN PAGE -->
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <div class="logo">
+                <h1>🔧 SoftLogic</h1>
+                <p>Sistema de Gestión para Taller Automotriz</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="input-group">
+                    <label>Usuario o Email</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">👤</span>
+                        <input type="text" placeholder="admin" value="admin">
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" placeholder="••••••••" value="admin">
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                
+                <div class="forgot-password">
+                    <a href="#">¿Olvidaste tu contraseña?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboardPage" class="dashboard">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>🔧 SoftLogic</h2>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li><a href="#" class="menu-item active" data-page="dashboard">
+                    <span class="menu-icon">📊</span> Dashboard
+                </a></li>
+                <li><a href="#" class="menu-item" data-page="clientes">
+                    <span class="menu-icon">👥</span> Clientes
+                </a></li>
+                <li><a href="#" class="menu-item" data-page="vehiculos">
+                    <span class="menu-icon">🚗</span> Vehículos
+                </a></li>
+                <li><a href="#" class="menu-item" data-page="proveedores">
+                    <span class="menu-icon">🏢</span> Proveedores
+                </a></li>
+                <li><a href="#" class="menu-item" data-page="inventario">
+                    <span class="menu-icon">📦</span> Inventario
+                    <span class="badge badge-warning">3</span>
+                </a></li>
+                <li><a href="#" class="menu-item" data-page="empleados">
+                    <span class="menu-icon">👨‍🔧</span> Empleados
+                </a></li>
+                <li><a href="#" class="menu-item" data-page="ordenes">
+                    <span class="menu-icon">📋</span> Órdenes de Servicio
+                </a></li>
+                <li><a href="#" class="menu-item" data-page="citas">
+                    <span class="menu-icon">📅</span> Citas
+                </a></li>
+                <li><a href="#" class="menu-item" data-page="facturas">
+                    <span class="menu-icon">💰</span> Facturación
+                </a></li>
+                <li><a href="#" class="menu-item" data-page="reportes">
+                    <span class="menu-icon">📈</span> Reportes
+                </a></li>
+                <li><a href="#" class="menu-item" data-page="configuracion">
+                    <span class="menu-icon">⚙️</span> Configuración
+                </a></li>
+            </ul>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <!-- HEADER -->
+            <header class="header">
+                <div class="header-left">
+                    <h1 id="pageTitle">Dashboard</h1>
+                </div>
+                <div class="header-right">
+                    <div class="notification-icon">
+                        🔔
+                        <span class="notification-badge">5</span>
+                    </div>
+                    <div class="user-profile">
+                        <div class="avatar">AD</div>
+                        <div>
+                            <div style="font-weight: 600;">Administrador</div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">admin@softlogic.com</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- CONTENT AREA -->
+            <div class="content-area">
+                <!-- DASHBOARD PAGE -->
+                <section id="dashboard" class="page-section active">
+                    <div class="alert alert-warning">
+                        ⚠️ Hay 3 productos con stock crítico. <a href="#" onclick="navigateTo('inventario')" style="color: inherit; font-weight: 600;">Ver inventario</a>
+                    </div>
+
+                    <div class="cards-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <div>
+                                    <div class="card-title">Clientes Activos</div>
+                                    <div class="card-value">248</div>
+                                </div>
+                                <div class="card-icon icon-primary">👥</div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <div>
+                                    <div class="card-title">Órdenes en Proceso</div>
+                                    <div class="card-value">15</div>
+                                </div>
+                                <div class="card-icon icon-warning">📋</div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <div>
+                                    <div class="card-title">Ingresos del Mes</div>
+                                    <div class="card-value">$8.5M</div>
+                                </div>
+                                <div class="card-icon icon-success">💰</div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <div>
+                                    <div class="card-title">Stock Bajo</div>
+                                    <div class="card-value" style="color: var(--danger)">3</div>
+                                </div>
+                                <div class="card-icon icon-danger">⚠️</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3 class="table-title">Citas de Hoy</h3>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Hora</th>
+                                    <th>Cliente</th>
+                                    <th>Vehículo</th>
+                                    <th>Servicio</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>09:00 AM</td>
+                                    <td>Carlos Mendoza</td>
+                                    <td>Toyota Corolla - ABC123</td>
+                                    <td>Cambio de aceite</td>
+                                    <td><span class="status-badge status-success">Confirmada</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon" title="Ver">👁️</button>
+                                            <button class="btn-icon" title="Editar">✏️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>11:30 AM</td>
+                                    <td>María González</td>
+                                    <td>Honda Civic - XYZ789</td>
+                                    <td>Alineación y balanceo</td>
+                                    <td><span class="status-badge status-info">Programada</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon" title="Ver">👁️</button>
+                                            <button class="btn-icon" title="Editar">✏️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>02:00 PM</td>
+                                    <td>Juan Pérez</td>
+                                    <td>Chevrolet Spark - DEF456</td>
+                                    <td>Revisión de frenos</td>
+                                    <td><span class="status-badge status-warning">En curso</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon" title="Ver">👁️</button>
+                                            <button class="btn-icon" title="Editar">✏️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- CLIENTES PAGE -->
+                <section id="clientes" class="page-section">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3 class="table-title">Gestión de Clientes</h3>
+                            <div class="table-actions">
+                                <button class="btn btn-primary btn-sm" onclick="openModal('clienteModal')">+ Nuevo Cliente</button>
+                            </div>
+                        </div>
+                        
+                        <div style="padding: 24px;">
+                            <div class="search-bar">
+                                <input type="text" class="search-input" placeholder="Buscar por nombre, cédula o teléfono...">
+                                <button class="btn btn-secondary btn-sm">🔍 Buscar</button>
+                            </div>
+                        </div>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Cédula</th>
+                                    <th>Teléfono</th>
+                                    <th>Email</th>
+                                    <th>Vehículos</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clientesTable">
+                                <tr>
+                                    <td>#001</td>
+                                    <td>Carlos Mendoza</td>
+                                    <td>1.234.567.890</td>
+                                    <td>310-555-0123</td>
+                                    <td>carlos.m@email.com</td>
+                                    <td>2</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon" title="Ver">👁️</button>
+                                            <button class="btn-icon" title="Editar">✏️</button>
+                                            <button class="btn-icon" title="Eliminar">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#002</td>
+                                    <td>María González</td>
+                                    <td>1.098.765.432</td>
+                                    <td>320-555-0456</td>
+                                    <td>maria.g@email.com</td>
+                                    <td>1</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon" title="Ver">👁️</button>
+                                            <button class="btn-icon" title="Editar">✏️</button>
+                                            <button class="btn-icon" title="Eliminar">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#003</td>
+                                    <td>Juan Pérez</td>
+                                    <td>1.111.222.333</td>
+                                    <td>315-555-0789</td>
+                                    <td>juan.p@email.com</td>
+                                    <td>3</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon" title="Ver">👁️</button>
+                                            <button class="btn-icon" title="Editar">✏️</button>
+                                            <button class="btn-icon" title="Eliminar">🗑️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- INVENTARIO PAGE -->
+                <section id="inventario" class="page-section">
+                    <div class="alert alert-warning">
+                        ⚠️ Productos con stock crítico detectados. Revisa y realiza pedidos urgentes.
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3 class="table-title">Gestión de Inventario</h3>
+                            <div class="table-actions">
+                                <button class="btn btn-primary btn-sm" onclick="openModal('inventarioModal')">+ Nuevo Artículo</button>
+                            </div>
+                        </div>
+                        
+                        <div style="padding: 24px;">
+                            <div class="search-bar">
+                                <input type="text" class="search-input" placeholder="Buscar por nombre, código o categoría...">
+                                <select class="search-input" style="flex: 0 0 200px;">
+                                    <option>Todas las categorías</option>
+                                    <option>Repuestos</option>
+                                    <option>Aceites</option>
+                                    <option>Filtros</option>
+                                    <option>Neumáticos</option>
+                                    <option>Accesorios</option>
+                                </select>
+                                <button class="btn btn-secondary btn-sm">🔍 Buscar</button>
+                            </div>
+                        </div>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Nombre</th>
+                                    <th>Categoría</th>
+                                    <th>Stock Actual</th>
+                                    <th>Stock Mínimo</th>
+                                    <th>Estado</th>
+                                    <th>Precio</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>FLT-001</td>
+                                    <td>Filtro de aceite Toyota</td>
+                                    <td>Filtros</td>
+                                    <td style="font-weight: 600; color: var(--danger)">3</td>
+                                    <td>10</td>
+                                    <td><span class="status-badge status-danger">Stock Crítico</span></td>
+                                    <td>$25.000</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon" title="Ver">👁️</button>
+                                            <button class="btn-icon" title="Actualizar Stock">📦</button>
+                                            <button class="btn-icon" title="Editar">✏️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ACE-002</td>
+                                    <td>Aceite 20W-50 Castrol</td>
+                                    <td>Aceites</td>
+                                    <td style="font-weight: 600; color: var(--warning)">12</td>
+                                    <td>10</td>
+                                    <td><span class="status-badge status-warning">Stock Bajo</span></td>
+                                    <td>$45.000</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon" title="Ver">👁️</button>
+                                            <button class="btn-icon" title="Actualizar Stock">📦</button>
+                                            <button class="btn-icon" title="Editar">✏️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>NEU-003</td>
+                                    <td>Neumático Michelin 195/65R15</td>
+                                    <td>Neumáticos</td>
+                                    <td style="font-weight: 600; color: var(--danger)">2</td>
+                                    <td>8</td>
+                                    <td><span class="status-badge status-danger">Stock Crítico</span></td>
+                                    <td>$280.000</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon" title="Ver">👁️</button>
+                                            <button class="btn-icon" title="Actualizar Stock">📦</button>
+                                            <button class="btn-icon" title="Editar">✏️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>REP-004</td>
+                                    <td>Pastillas de freno Brembo</td>
+                                    <td>Repuestos</td>
+                                    <td style="font-weight: 600; color: var(--success)">45</td>
+                                    <td>15</td>
+                                    <td><span class="status-badge status-success">Stock OK</span></td>
+                                    <td>$120.000</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon" title="Ver">👁️</button>
+                                            <button class="btn-icon" title="Actualizar Stock">📦</button>
+                                            <button class="btn-icon" title="Editar">✏️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>FLT-005</td>
+                                    <td>Filtro de aire K&N</td>
+                                    <td>Filtros</td>
+                                    <td style="font-weight: 600; color: var(--success)">28</td>
+                                    <td>12</td>
+                                    <td><span class="status-badge status-success">Stock OK</span></td>
+                                    <td>$65.000</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon" title="Ver">👁️</button>
+                                            <button class="btn-icon" title="Actualizar Stock">📦</button>
+                                            <button class="btn-icon" title="Editar">✏️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ORDENES PAGE -->
+                <section id="ordenes" class="page-section">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3 class="table-title">Órdenes de Servicio</h3>
+                            <div class="table-actions">
+                                <button class="btn btn-primary btn-sm" onclick="openModal('ordenModal')">+ Nueva Orden</button>
+                            </div>
+                        </div>
+                        
+                        <div style="padding: 24px;">
+                            <div class="search-bar">
+                                <input type="text" class="search-input" placeholder="Buscar por N° orden, cliente o placa...">
+                                <select class="search-input" style="flex: 0 0 200px;">
+                                    <option>Todos los estados</option>
+                                    <option>Pendiente</option>
+                                    <option>En Proceso</option>
+                                    <option>Finalizada</option>
+                                    <option>Cancelada</option>
+                                </select>
+                                <button class="btn btn-secondary btn-sm">🔍 Buscar</button>
+                            </div>
+                        </div>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>N° Orden</th>
+                                    <th>Cliente</th>
+                                    <th>Vehículo</th>
+                                    <th>Fecha</th>
+                                    <th>Estado</th>
+                                    <th>Mecánico</th>
+                                    <th>Total</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="font-weight: 600;">#OS-001</td>
+                                    <td>Carlos Mendoza</td>
+                                    <td>Toyota Corolla<br><small style="color: var(--text-secondary)">ABC123</small></td>
+                                    <td>23/11/2025</td>
+                                    <td><span class="status-badge status-warning">En Proceso</span></td>
+                                    <td>Miguel Ángel</td>
+                                    <td style="font-weight: 600;">$450.000</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon" title="Ver Detalle">👁️</button>
+                                            <button class="btn-icon" title="Editar">✏️</button>
+                                            <button class="btn-icon" title="Generar Factura">💰</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 600;">#OS-002</td>
+                                    <td>María González</td>
+                                    <td>Honda Civic<br><small style="color: var(--text-secondary)">XYZ789</small></td>
+                                    <td>23/11/2025</td>
+                                    <td><span class="status-badge status-info">Pendiente</span></td>
+                                    <td>Jorge Luis</td>
+                                    <td style="font-weight: 600;">$320.000</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon" title="Ver Detalle">👁️</button>
+                                            <button class="btn-icon" title="Editar">✏️</button>
+                                            <button class="btn-icon" title="Iniciar">▶️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 600;">#OS-003</td>
+                                    <td>Juan Pérez</td>
+                                    <td>Chevrolet Spark<br><small style="color: var(--text-secondary)">DEF456</small></td>
+                                    <td>22/11/2025</td>
+                                    <td><span class="status-badge status-success">Finalizada</span></td>
+                                    <td>Miguel Ángel</td>
+                                    <td style="font-weight: 600;">$580.000</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon" title="Ver Detalle">👁️</button>
+                                            <button class="btn-icon" title="Factura">📄</button>
+                                            <button class="btn-icon" title="Imprimir">🖨️</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- OTHER PAGES (Placeholder) -->
+                <section id="vehiculos" class="page-section">
+                    <div class="card">
+                        <h2 style="margin-bottom: 16px;">🚗 Gestión de Vehículos</h2>
+                        <p style="color: var(--text-secondary);">Módulo en construcción. Aquí se gestionarán todos los vehículos registrados en el sistema.</p>
+                    </div>
+                </section>
+
+                <section id="proveedores" class="page-section">
+                    <div class="card">
+                        <h2 style="margin-bottom: 16px;">🏢 Gestión de Proveedores</h2>
+                        <p style="color: var(--text-secondary);">Módulo en construcción. Aquí se gestionarán los proveedores de repuestos y servicios.</p>
+                    </div>
+                </section>
+
+                <section id="empleados" class="page-section">
+                    <div class="card">
+                        <h2 style="margin-bottom: 16px;">👨‍🔧 Gestión de Empleados</h2>
+                        <p style="color: var(--text-secondary);">Módulo en construcción. Aquí se gestionarán los empleados del taller.</p>
+                    </div>
+                </section>
+
+                <section id="citas" class="page-section">
+                    <div class="card">
+                        <h2 style="margin-bottom: 16px;">📅 Gestión de Citas</h2>
+                        <p style="color: var(--text-secondary);">Módulo en construcción. Aquí se agendarán y gestionarán las citas del taller.</p>
+                    </div>
+                </section>
+
+                <section id="facturas" class="page-section">
+                    <div class="card">
+                        <h2 style="margin-bottom: 16px;">💰 Gestión de Facturación</h2>
+                        <p style="color: var(--text-secondary);">Módulo en construcción. Aquí se generarán y gestionarán las facturas.</p>
+                    </div>
+                </section>
+
+                <section id="reportes" class="page-section">
+                    <div class="card">
+                        <h2 style="margin-bottom: 16px;">📈 Reportes</h2>
+                        <p style="color: var(--text-secondary);">Módulo en construcción. Aquí se generarán reportes de inventario, ventas, clientes, etc.</p>
+                    </div>
+                </section>
+
+                <section id="configuracion" class="page-section">
+                    <div class="card">
+                        <h2 style="margin-bottom: 16px;">⚙️ Configuración</h2>
+                        <p style="color: var(--text-secondary);">Módulo en construcción. Aquí se configurarán los parámetros del sistema.</p>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL NUEVO CLIENTE -->
+    <div id="clienteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Registrar Nuevo Cliente</h3>
+                <button class="close-modal" onclick="closeModal('clienteModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="clienteForm">
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label>Nombre Completo *</label>
+                            <input type="text" placeholder="Ej: Juan Pérez García" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Cédula/NIT *</label>
+                            <input type="text" placeholder="Ej: 1.234.567.890" required>
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label>Teléfono *</label>
+                            <input type="tel" placeholder="Ej: 310-555-0123" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Email</label>
+                            <input type="email" placeholder="Ej: cliente@email.com">
+                        </div>
+                    </div>
+                    <div class="form-grid full">
+                        <div class="input-group">
+                            <label>Dirección</label>
+                            <input type="text" placeholder="Ej: Calle 123 #45-67">
+                        </div>
+                    </div>
+                    <div class="form-grid full">
+                        <div class="input-group">
+                            <label>Notas Adicionales</label>
+                            <textarea rows="3" placeholder="Información adicional del cliente..." style="width: 100%; padding: 12px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: inherit; resize: vertical;"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" onclick="closeModal('clienteModal')">Cancelar</button>
+                <button class="btn btn-primary btn-sm" onclick="saveCliente()">Guardar Cliente</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL NUEVO INVENTARIO -->
+    <div id="inventarioModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Registrar Nuevo Artículo</h3>
+                <button class="close-modal" onclick="closeModal('inventarioModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="inventarioForm">
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label>Código *</label>
+                            <input type="text" placeholder="Ej: REP-001" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Categoría *</label>
+                            <select style="width: 100%; padding: 12px; border: 2px solid #E2E8F0; border-radius: 8px; font-size: 14px;" required>
+                                <option value="">Seleccionar...</option>
+                                <option>Repuestos</option>
+                                <option>Aceites</option>
+                                <option>Filtros</option>
+                                <option>Neumáticos</option>
+                                <option>Accesorios</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-grid full">
+                        <div class="input-group">
+                            <label>Nombre del Producto *</label>
+                            <input type="text" placeholder="Ej: Filtro de aceite Toyota" required>
+                        </div>
+                    </div>
+                    <div class="form-grid full">
+                        <div class="input-group">
+                            <label>Descripción</label>
+                            <textarea rows="2" placeholder="Descripción detallada del producto..." style="width: 100%; padding: 12px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: inherit; resize: vertical;"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label>Precio de Compra *</label>
+                            <input type="number" placeholder="$0" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Precio de Venta *</label>
+                            <input type="number" placeholder="$0" required>
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label>Stock Actual *</label>
+                            <input type="number" placeholder="0" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Stock Mínimo *</label>
+                            <input type="number" placeholder="0" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" onclick="closeModal('inventarioModal')">Cancelar</button>
+                <button class="btn btn-primary btn-sm" onclick="saveInventario()">Guardar Artículo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL NUEVA ORDEN -->
+    <div id="ordenModal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Nueva Orden de Servicio</h3>
+                <button class="close-modal" onclick="closeModal('ordenModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="ordenForm">
+                    <h4 style="margin-bottom: 16px; color: var(--primary);">📋 Información Básica</h4>
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label>Cliente *</label>
+                            <select style="width: 100%; padding: 12px; border: 2px solid #E2E8F0; border-radius: 8px; font-size: 14px;" required>
+                                <option value="">Seleccionar cliente...</option>
+                                <option>Carlos Mendoza - 1.234.567.890</option>
+                                <option>María González - 1.098.765.432</option>
+                                <option>Juan Pérez - 1.111.222.333</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Vehículo *</label>
+                            <select style="width: 100%; padding: 12px; border: 2px solid #E2E8F0; border-radius: 8px; font-size: 14px;" required>
+                                <option value="">Seleccionar vehículo...</option>
+                                <option>Toyota Corolla - ABC123</option>
+                                <option>Honda Civic - XYZ789</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-grid full">
+                        <div class="input-group">
+                            <label>Descripción del Problema/Servicio *</label>
+                            <textarea rows="3" placeholder="Describe el problema o servicio solicitado..." style="width: 100%; padding: 12px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: inherit; resize: vertical;" required></textarea>
+                        </div>
+                    </div>
+
+                    <h4 style="margin: 24px 0 16px; color: var(--primary);">🔧 Servicios</h4>
+                    <div style="background: var(--background); padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+                        <label style="display: flex; align-items: center; margin-bottom: 12px;">
+                            <input type="checkbox" style="margin-right: 8px;">
+                            Cambio de aceite - $80.000
+                        </label>
+                        <label style="display: flex; align-items: center; margin-bottom: 12px;">
+                            <input type="checkbox" style="margin-right: 8px;">
+                            Alineación y balanceo - $120.000
+                        </label>
+                        <label style="display: flex; align-items: center; margin-bottom: 12px;">
+                            <input type="checkbox" style="margin-right: 8px;">
+                            Revisión de frenos - $150.000
+                        </label>
+                        <label style="display: flex; align-items: center;">
+                            <input type="checkbox" style="margin-right: 8px;">
+                            Cambio de filtros - $60.000
+                        </label>
+                    </div>
+
+                    <h4 style="margin: 24px 0 16px; color: var(--primary);">⚙️ Asignación</h4>
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label>Mecánico Asignado *</label>
+                            <select style="width: 100%; padding: 12px; border: 2px solid #E2E8F0; border-radius: 8px; font-size: 14px;" required>
+                                <option value="">Seleccionar mecánico...</option>
+                                <option>Miguel Ángel - Mecánico Senior</option>
+                                <option>Jorge Luis - Mecánico Junior</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Fecha Estimada de Entrega *</label>
+                            <input type="date" style="width: 100%; padding: 12px; border: 2px solid #E2E8F0; border-radius: 8px; font-size: 14px;" required>
+                        </div>
+                    </div>
+
+                    <div style="background: #EFF6FF; padding: 16px; border-radius: 8px; margin-top: 24px; border-left: 4px solid var(--primary);">
+                        <h4 style="margin-bottom: 12px;">💰 Resumen de Costos</h4>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>Subtotal Servicios:</span>
+                            <strong>$410.000</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>IVA (19%):</span>
+                            <strong>$77.900</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 18px; margin-top: 12px; padding-top: 12px; border-top: 2px solid var(--primary);">
+                            <span style="font-weight: 600;">TOTAL:</span>
+                            <strong style="color: var(--primary);">$487.900</strong>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" onclick="closeModal('ordenModal')">Cancelar</button>
+                <button class="btn btn-primary btn-sm" onclick="saveOrden()">Crear Orden de Servicio</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation
+        const menuItems = document.querySelectorAll('.menu-item');
+        const pageSections = document.querySelectorAll('.page-section');
+        const pageTitle = document.getElementById('pageTitle');
+
+        menuItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const page = item.getAttribute('data-page');
+                navigateTo(page);
+            });
+        });
+
+        function navigateTo(page) {
+            // Update menu
+            menuItems.forEach(item => item.classList.remove('active'));
+            const activeMenuItem = document.querySelector(`[data-page="${page}"]`);
+            if (activeMenuItem) {
+                activeMenuItem.classList.add('active');
+            }
+
+            // Update content
+            pageSections.forEach(section => section.classList.remove('active'));
+            const activeSection = document.getElementById(page);
+            if (activeSection) {
+                activeSection.classList.add('active');
+            }
+
+            // Update title
+            const titles = {
+                'dashboard': 'Dashboard',
+                'clientes': 'Gestión de Clientes',
+                'vehiculos': 'Gestión de Vehículos',
+                'proveedores': 'Gestión de Proveedores',
+                'inventario': 'Gestión de Inventario',
+                'empleados': 'Gestión de Empleados',
+                'ordenes': 'Órdenes de Servicio',
+                'citas': 'Gestión de Citas',
+                'facturas': 'Facturación',
+                'reportes': 'Reportes',
+                'configuracion': 'Configuración'
+            };
+            pageTitle.textContent = titles[page] || 'Dashboard';
+        }
+
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('dashboardPage').classList.add('active');
+        });
+
+        // Modal functions
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Close modal when clicking outside
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
+
+        // Save functions with success messages
+        function saveCliente() {
+            const form = document.getElementById('clienteForm');
+            if (form.checkValidity()) {
+                closeModal('clienteModal');
+                showSuccessMessage('Cliente registrado exitosamente');
+                form.reset();
+            } else {
+                form.reportValidity();
+            }
+        }
+
+        function saveInventario() {
+            const form = document.getElementById('inventarioForm');
+            if (form.checkValidity()) {
+                closeModal('inventarioModal');
+                showSuccessMessage('Artículo registrado exitosamente');
+                form.reset();
+            } else {
+                form.reportValidity();
+            }
+        }
+
+        function saveOrden() {
+            const form = document.getElementById('ordenForm');
+            if (form.checkValidity()) {
+                closeModal('ordenModal');
+                showSuccessMessage('Orden de servicio creada exitosamente');
+                form.reset();
+            } else {
+                form.reportValidity();
+            }
+        }
+
+        function showSuccessMessage(message) {
+            const alert = document.createElement('div');
+            alert.className = 'alert alert-success';
+            alert.innerHTML = `✅ ${message}`;
+            alert.style.position = 'fixed';
+            alert.style.top = '20px';
+            alert.style.right = '20px';
+            alert.style.zIndex = '9999';
+            alert.style.minWidth = '300px';
+            alert.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+            
+            document.body.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.style.transition = 'opacity 0.3s';
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
